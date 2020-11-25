@@ -1,0 +1,2 @@
+# Gagicile
+Proiect POO
