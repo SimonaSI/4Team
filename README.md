@@ -1,2 +1,2 @@
-# Gagicile
+# 4Team
 Proiect POO
