@@ -1,51 +1,171 @@
-#include<stdio.h>
+#include<iostream>
+#include <string>
+using namespace std;
+
+class identificare
+{
+public: string comanda;
+	  
+	  identificare(string comanda)
+	  {
+		  if (comanda == "create table" || comanda=="drop table" || comanda=="display table")
+		  {
+			  this->comanda = comanda;
+		  }
+	  }
+};
+
+class create_table
+{
+public: 
+	string denumire;
+	int nr_atribute;
+	string* atribut;	
+	string* tip;
+	create_table(string denumire = "Grinci ne-a furat craciunul", int nr_atribute = 0, string* atribut = nullptr, string* tip = nullptr)
+	{
+		  this->denumire = denumire;
+		  if (atribut != nullptr && nr_atribute > 0)
+		  {
+			  this->nr_atribute = nr_atribute;
+			  this->atribut = new string[nr_atribute];
+			  for (int i = 0; i < nr_atribute; i++)
+			  {
+				  this->atribut[i] = atribut[i];
+			  }
+		  }
+		  else
+		  {
+			  this->nr_atribute = 0;
+			  this->atribut = nullptr;
+		  }
+		  if (tip != nullptr && nr_atribute > 0)
+		  {
+			  this->nr_atribute = nr_atribute;
+			  this->tip = new string[nr_atribute];
+			  for (int i = 0; i < nr_atribute; i++)
+			  {
+				  this->tip[i] = tip[i];
+			  }
+		  }
+		  else
+		  {
+			  this->nr_atribute = 0;
+			  this->tip = nullptr;
+		  }
+		  
+		  cout << "S a apelat constructorul" << endl;
+	}
+	create_table(const create_table& t)
+	{
+		this->denumire = t.denumire;
+		if (t.atribut != nullptr && t.nr_atribute>0 && t.tip!=nullptr)
+		{
+			this->nr_atribute = t.nr_atribute;
+			this->atribut = new string[nr_atribute];
+			this->tip = new string[nr_atribute];
+			for (int i = 0; i < t.nr_atribute; i++)
+			{
+				this->atribut[i] = t.atribut[i];
+				this->tip[i] = t.tip[i];
+			}
+		}
+		else
+		{
+			this->atribut = nullptr;
+			this->nr_atribute = 0;
+			this->tip = nullptr;
+		}
+	}
+
+	create_table& operator=(const create_table& t)
+	{
+		if (atribut != nullptr )
+		{
+			delete[] atribut;
+		}
+		if (tip != nullptr)
+		{
+			delete[] tip;
+		}
+		this->denumire = t.denumire;
+		if (t.atribut != nullptr && t.nr_atribute > 0 && t.tip!=nullptr)
+		{
+			this->nr_atribute = t.nr_atribute;
+			this->atribut = new string[nr_atribute];
+			this->tip = new string[nr_atribute];
+			for (int i = 0; i < t.nr_atribute; i++)
+			{
+				this->atribut[i] = t.atribut[i];
+				this->tip[i] = t.tip[i];
+			}
+		}
+		else
+		{
+			this->atribut = nullptr;
+			this->nr_atribute = 0;
+			this->tip = nullptr;
+		}
+		return *this;
+	}
+	~create_table()
+	{
+		if (atribut != nullptr)
+		{
+			delete[] atribut;
+		}
+		if (tip != nullptr)
+		{
+			delete[] tip;
+		}
+		cout << "S a apelat destructorul" << endl;
+	}
+};
+
+
+class linie
+{
+public:
+	int nr_coloane;
+	string nume_coloane;
+
+};
+
 
 int main()
 {
-	int x = 2;
-	int y = 0;
-	//linia de mai jos, daca o decomentam, va genera o eroare de executie
-	//erorile de executie sunt mai clar vizibile daca se utilizeaza optiunea
-	//Debug -> Start Debugging (F5)
-	//int z = x / y;
-
-	//definire pointer si initializare cu NULL
-	int* pointer = nullptr;
-
-	int a = 5;
-
-	//pointer salveaza adresa lui a
-	pointer = &a;
-
-	//afiseaza adresa de memorie (adresa lui a in acest caz particular)
-	printf("%p\n", pointer);
-
-	//afiseaza continutul de la o adresa de memorie
-	//operatorul * joaca aici rol de operator de dereferentiere
-	printf("%d\n", *pointer);
-
-	//creste adresa salvata in pointer cu sizeof(int)
-	pointer++;
-	printf("%p\n", pointer);
-
-	//q salveaza o adresa mai mica cu 2 * sizeof(int) decat pointer
-	int * q = pointer - 2;
-	printf("%p\n", q);
-
-	//diferenta a doi pointeri este un intreg
-	//si reprezinta cate variabile de tip int, in acest caz particular
-	//incap intre cele doua adrese de memorie
-	printf("%d\n", pointer - q);
-
-	pointer--;
-	//w este un pointer la pointer la intreg
-	//el poate salva doar adrese de adrese de intregi
-	int** w = &pointer;
-	//adresa salvata in w
-	printf("%p\n", w);
-	//valoarea de la adresa salvata in w
-	//de fapt valoarea lui pointer, pentru acest caz particular
-	printf("%p\n", *w);
-	//valoarea de la adresa a carei adresa este salvata in w
-	printf("%d\n", **w);
+	string n;
+	cout << "Doriti sa creati tabele? Da/Nu" << endl;
+	cin >> n;
+	if (n == "Da")
+	{
+		int nr;
+		cout << "Cate tabele doriti sa adaugati?" << endl;
+		cin >> nr;
+		for (int i = 0; i < nr; i++)
+		{
+			int m;
+			string denum;
+			cout << "Numele tabelei "<< i+1<<" este: ";
+			cin >> denum;
+			cout << "Numarul de atribute: ";
+			cin >> m;
+			string* coloana = new string[m];
+			string* tipul = new string[m];
+			for (int i = 0; i < m; i++)
+			{
+				cout << "atributul " << i + 1 << " ";
+				cin >> coloana[i];
+				cout << "tipul " << " ";
+				cin >> tipul[i];
+			}
+			create_table tabel(denum, m, coloana, tipul);
+		}
+	}
+	else
+	{
+		cout << "La revedere";
+	}
+	//cout << "Doriti sa stergeti tabele? Da/Nu";
+	
 }
