@@ -22,7 +22,7 @@ public:
 	int nr_atribute;
 	string* atribut;	
 	string* tip;
-	create_table(string denumire = "Grinci ne-a furat craciunul", int nr_atribute = 0, string* atribut = nullptr, string* tip = nullptr)
+	create_table(string denumire = "Tabel", int nr_atribute = 0, string* atribut = nullptr, string* tip = nullptr)
 	{
 		  this->denumire = denumire;
 		  if (atribut != nullptr && nr_atribute > 0)
