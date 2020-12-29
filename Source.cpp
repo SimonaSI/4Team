@@ -1,171 +1,161 @@
 #include<iostream>
 #include <string>
+#include"create_table.h"
+#include"Identificare.h"
 using namespace std;
-
-class identificare
-{
-public: string comanda;
-	  
-	  identificare(string comanda)
-	  {
-		  if (comanda == "create table" || comanda=="drop table" || comanda=="display table")
-		  {
-			  this->comanda = comanda;
-		  }
-	  }
-};
-
-class create_table
-{
-public: 
-	string denumire;
-	int nr_atribute;
-	string* atribut;	
-	string* tip;
-	create_table(string denumire = "Tabel", int nr_atribute = 0, string* atribut = nullptr, string* tip = nullptr)
-	{
-		  this->denumire = denumire;
-		  if (atribut != nullptr && nr_atribute > 0)
-		  {
-			  this->nr_atribute = nr_atribute;
-			  this->atribut = new string[nr_atribute];
-			  for (int i = 0; i < nr_atribute; i++)
-			  {
-				  this->atribut[i] = atribut[i];
-			  }
-		  }
-		  else
-		  {
-			  this->nr_atribute = 0;
-			  this->atribut = nullptr;
-		  }
-		  if (tip != nullptr && nr_atribute > 0)
-		  {
-			  this->nr_atribute = nr_atribute;
-			  this->tip = new string[nr_atribute];
-			  for (int i = 0; i < nr_atribute; i++)
-			  {
-				  this->tip[i] = tip[i];
-			  }
-		  }
-		  else
-		  {
-			  this->nr_atribute = 0;
-			  this->tip = nullptr;
-		  }
-		  
-		  cout << "S a apelat constructorul" << endl;
-	}
-	create_table(const create_table& t)
-	{
-		this->denumire = t.denumire;
-		if (t.atribut != nullptr && t.nr_atribute>0 && t.tip!=nullptr)
-		{
-			this->nr_atribute = t.nr_atribute;
-			this->atribut = new string[nr_atribute];
-			this->tip = new string[nr_atribute];
-			for (int i = 0; i < t.nr_atribute; i++)
-			{
-				this->atribut[i] = t.atribut[i];
-				this->tip[i] = t.tip[i];
-			}
-		}
-		else
-		{
-			this->atribut = nullptr;
-			this->nr_atribute = 0;
-			this->tip = nullptr;
-		}
-	}
-
-	create_table& operator=(const create_table& t)
-	{
-		if (atribut != nullptr )
-		{
-			delete[] atribut;
-		}
-		if (tip != nullptr)
-		{
-			delete[] tip;
-		}
-		this->denumire = t.denumire;
-		if (t.atribut != nullptr && t.nr_atribute > 0 && t.tip!=nullptr)
-		{
-			this->nr_atribute = t.nr_atribute;
-			this->atribut = new string[nr_atribute];
-			this->tip = new string[nr_atribute];
-			for (int i = 0; i < t.nr_atribute; i++)
-			{
-				this->atribut[i] = t.atribut[i];
-				this->tip[i] = t.tip[i];
-			}
-		}
-		else
-		{
-			this->atribut = nullptr;
-			this->nr_atribute = 0;
-			this->tip = nullptr;
-		}
-		return *this;
-	}
-	~create_table()
-	{
-		if (atribut != nullptr)
-		{
-			delete[] atribut;
-		}
-		if (tip != nullptr)
-		{
-			delete[] tip;
-		}
-		cout << "S a apelat destructorul" << endl;
-	}
-};
-
-
-class linie
-{
-public:
-	int nr_coloane;
-	string nume_coloane;
-
-};
-
 
 int main()
 {
-	string n;
-	cout << "Doriti sa creati tabele? Da/Nu" << endl;
-	cin >> n;
-	if (n == "Da")
+	int ok = 1;
+	string m;
+	identificare i;
+	create_table c[100];
+	int k = 0;
+	int k1 = 0;
+	cin >> i;
+	while (ok == 1)
 	{
-		int nr;
-		cout << "Cate tabele doriti sa adaugati?" << endl;
-		cin >> nr;
-		for (int i = 0; i < nr; i++)
+		if (i.getcomanda() == "create")
 		{
-			int m;
-			string denum;
-			cout << "Numele tabelei "<< i+1<<" este: ";
-			cin >> denum;
-			cout << "Numarul de atribute: ";
-			cin >> m;
-			string* coloana = new string[m];
-			string* tipul = new string[m];
-			for (int i = 0; i < m; i++)
+			string op;
+			int op1;
+			string op2;
+			create_table t;
+			cin >> t;
+			c[k] = t;
+			k++;
+			string* values;
+			values = new string[t.getnr_atribute()];
+			cout << "Doriti sa adaugati inregistrari? Da/Nu " << endl;
+			cin >> op;
+			if (op == "Da")
 			{
-				cout << "atributul " << i + 1 << " ";
-				cin >> coloana[i];
-				cout << "tipul " << " ";
-				cin >> tipul[i];
+				cout << "Cate inregistrari doriti sa adaugati?" << endl;
+				cin >> op1;
+				if (op1 > 0)
+				{
+					string** inr;
+					int co = 0;
+					inr = new string * [op1];
+					for (int i = 0; i < op1; i++)
+					{
+						inr[i] = new string[t.getnr_atribute()];
+					}
+					for (int i = 0; i < op1; i++)
+					{
+						t.adauga(values);
+
+						for (int j = 0; j < t.getnr_atribute(); j++)
+						{
+							inr[co][j] = values[j];
+						}
+						co++;
+					}
+					cout << "Doriti alta comanda? Delete/Select/Update" << endl;
+					string l;
+					cin >> l;
+					while (l == "Delete" or l == "Select" or l == "Update")
+					{
+						if (l == "Delete")
+						{
+							cout << "Doriti sa stergeti o inregistrare? Da/Nu " << endl;
+							cin >> op;
+							if (op == "Da")
+							{
+								t.sterge(inr, co);
+								cout << "Mai stergeti? Da/Nu "<<endl;
+								cin >> op2;
+								while (op2 == "Da")
+								{
+									t.sterge(inr, co);
+									cout << "Mai stergeti? Da/Nu "<<endl;
+									cin >> op2;
+								}
+							}
+						}
+						if (l == "Select")
+						{
+							cout << "Doriti sa faceti o selectie? Da/Nu " << endl;
+							cin >> op;
+							if (op == "Da")
+							{
+								t.select(inr, co);
+								cout << "Mai selectati? Da/Nu "<<endl;
+								cin >> op2;
+								while (op2 == "Da")
+								{
+									t.select(inr, co);
+									cout << "Mai selectati? Da/Nu "<<endl;
+									cin >> op2;
+								}
+							}
+						}
+						if (l == "Update")
+						{
+							cout << "Doriti sa modificati un camp? Da/Nu "<<endl;
+							cin >> op;
+							if (op == "Da")
+							{
+								t.modif(inr, co);
+								cout << "Mai modificati? Da/Nu "<<endl;
+								cin >> op2;
+								while (op2 == "Da")
+								{
+									t.modif(inr, co);
+									cout << "Mai modificati? Da/Nu "<<endl;
+									cin >> op2;
+								}
+							}
+						}
+						cout << "Doriti alta comanda? Delete/Select/Update"<<endl;
+						cin >> l;
+					}
+				}
 			}
-			create_table tabel(denum, m, coloana, tipul);
+		}
+		if (i.getcomanda() == "drop")
+		{
+			cout << "DROP TABLE ";
+			string name;
+			cin >> name;
+			for (int i = 0; i < k; i++)
+			{
+				if (c[i].getdenumire() == name)
+				{
+					for (int j = i; j < k - 1; j++)
+					{
+						c[j] = c[j + 1];
+					}
+					k--;
+				}
+			}
+		}
+		if (i.getcomanda() == "display")
+		{
+			cout << "DISPLAY TABLE ";
+			string name1;
+			cin >> name1;
+			for (int i = 0; i < k; i++)
+			{
+				if (c[i].getdenumire() == name1)
+				{
+					cout << c[i] << endl;
+				}
+			}
+		}
+		cout << "Doriti sa efectuati alte operatiuni? Da/Nu "<<endl;
+		cin >> m;
+		if (m == "Da")
+		{
+			cin >> i;
+		}
+		else
+		{
+			ok = 0;
 		}
 	}
-	else
+	for (int i = 0; i < k; i++)
 	{
-		cout << "La revedere";
+		cout << endl << c[i] << endl;
 	}
-	//cout << "Doriti sa stergeti tabele? Da/Nu";
-	
 }
